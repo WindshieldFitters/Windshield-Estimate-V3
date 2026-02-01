@@ -1,5 +1,5 @@
-# Windshield-Estimate-V3
-Quick glass estimator
+# Windshield Estimator
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -44,10 +44,6 @@ button {
   margin-top: 10px;
   font-size: 14px;
 }
-.small {
-  font-size: 12px;
-  color: #555;
-}
 </style>
 </head>
 
@@ -67,13 +63,20 @@ button {
     <option value="17">Yes ($17)</option>
   </select>
 
-<label>ADAS Calibration</label>
-<select id="adas">
-  <option value="0">None</option>
-  <option value="315">Static ($315)</option>
-  <option value="200">Dynamic ($200)</option>
-  <option value="515">Dual – Static + Dynamic ($515)</option>
-</select>
+  <label>ADAS Calibration</label>
+  <select id="adas">
+    <option value="0">None</option>
+    <option value="315">Static ($315)</option>
+    <option value="200">Dynamic ($200)</option>
+    <option value="515">Dual – Static + Dynamic ($515)</option>
+  </select>
+
+  <label>Labor</label>
+  <select id="labor">
+    <option value="200">$200</option>
+    <option value="220" selected>$220 (Standard)</option>
+    <option value="250">$250</option>
+  </select>
 
   <hr>
 
@@ -93,6 +96,7 @@ function calculate() {
   const molding = Number(document.getElementById("moldingCost").value) || 0;
   const rainSensor = Number(document.getElementById("rainSensor").value);
   const adas = Number(document.getElementById("adas").value);
+  const labor = Number(document.getElementById("labor").value);
 
   const extraPartName = document.getElementById("extraPartName").value;
   const extraPartCost = Number(document.getElementById("extraPartCost").value) || 0;
@@ -102,7 +106,6 @@ function calculate() {
   const moldingWithMarkup = molding * 1.25;
   const extraPartWithMarkup = extraPartCost * 1.25;
 
-  const labor = 220;
   const materials = 50;
 
   // TAXABLE PARTS ONLY
@@ -141,7 +144,7 @@ function calculate() {
     Rain Sensor Kit: $${rainSensor.toFixed(2)}<br>
     Materials: $50.00<br>
     ${extraPartLine}
-    Labor (non-taxable): $220.00<br>
+    Labor (non-taxable): $${labor.toFixed(2)}<br>
     ADAS (non-taxable): $${adas.toFixed(2)}<br>
     Tax (8.25% on parts only): $${tax.toFixed(2)}<br>
     Payment Fee (4%): $${paymentFee.toFixed(2)}
