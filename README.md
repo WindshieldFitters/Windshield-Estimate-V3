@@ -1,6 +1,5 @@
 # Windshield-Estimate-V3
 Quick glass estimator
-<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
