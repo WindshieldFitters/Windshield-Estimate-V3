@@ -1,4 +1,4 @@
-# Windshield Estimator v5 Windshield Fitters
+# Windshield Estimator
 
 <html lang="en">
 <head>
