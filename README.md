@@ -1,4 +1,3 @@
-index.html
 # Windshield-Estimate-V3
 Quick glass estimator
 <!DOCTYPE html>
