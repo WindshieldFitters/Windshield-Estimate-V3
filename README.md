@@ -26,6 +26,9 @@ input, select {
   padding: 8px;
   margin: 8px 0 15px;
 }
+.checkbox {
+  margin-bottom: 15px;
+}
 button {
   width: 100%;
   padding: 12px;
@@ -80,6 +83,16 @@ button {
 
   <hr>
 
+  <div class="checkbox">
+    <input type="checkbox" id="materials">
+    <label for="materials">Materials Fee ($50)</label>
+  </div>
+
+  <div class="checkbox">
+    <input type="checkbox" id="travel">
+    <label for="travel">Travel Fee ($15)</label>
+  </div>
+
   <label>Additional Part (optional)</label>
   <input type="text" id="extraPartName" placeholder="Part description (ex: cowl, clips)">
   <input type="number" id="extraPartCost" placeholder="Part cost $">
@@ -98,6 +111,9 @@ function calculate() {
   const adas = Number(document.getElementById("adas").value);
   const labor = Number(document.getElementById("labor").value);
 
+  const materials = document.getElementById("materials").checked ? 50 : 0;
+  const travel = document.getElementById("travel").checked ? 15 : 0;
+
   const extraPartName = document.getElementById("extraPartName").value;
   const extraPartCost = Number(document.getElementById("extraPartCost").value) || 0;
 
@@ -105,8 +121,6 @@ function calculate() {
   const glassWithMarkup = glass * 1.25;
   const moldingWithMarkup = molding * 1.25;
   const extraPartWithMarkup = extraPartCost * 1.25;
-
-  const materials = 50;
 
   // TAXABLE PARTS ONLY
   const taxableParts =
@@ -121,12 +135,13 @@ function calculate() {
   // NON-TAXABLE
   const nonTaxable =
     labor +
-    adas;
+    adas +
+    travel;
 
   const subtotal = taxableParts + nonTaxable;
   const totalWithTax = subtotal + tax;
 
-  // Always add 4% payment fee
+  // 4% payment fee
   const paymentFee = totalWithTax * 0.04;
   const finalTotal = totalWithTax + paymentFee;
 
@@ -138,14 +153,18 @@ function calculate() {
     extraPartLine = `${extraPartName || "Additional Part"} (25% markup): $${extraPartWithMarkup.toFixed(2)}<br>`;
   }
 
+  let materialsLine = materials > 0 ? `Materials: $50.00<br>` : "";
+  let travelLine = travel > 0 ? `Travel Fee (non-taxable): $15.00<br>` : "";
+
   document.getElementById("breakdown").innerHTML = `
     Glass (25% markup): $${glassWithMarkup.toFixed(2)}<br>
     Molding (25% markup): $${moldingWithMarkup.toFixed(2)}<br>
     Rain Sensor Kit: $${rainSensor.toFixed(2)}<br>
-    Materials: $50.00<br>
+    ${materialsLine}
     ${extraPartLine}
     Labor (non-taxable): $${labor.toFixed(2)}<br>
     ADAS (non-taxable): $${adas.toFixed(2)}<br>
+    ${travelLine}
     Tax (8.25% on parts only): $${tax.toFixed(2)}<br>
     Payment Fee (4%): $${paymentFee.toFixed(2)}
   `;
