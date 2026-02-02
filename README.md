@@ -1,16 +1,18 @@
-# Windshield Estimator
+# Glass Estimator
 
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <title>Windshield Estimate Calculator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
+
 <style>
 body {
   font-family: Arial, sans-serif;
   background: #f4f4f4;
   padding: 20px;
 }
+
 .container {
   background: #fff;
   padding: 20px;
@@ -18,17 +20,18 @@ body {
   max-width: 420px;
   margin: auto;
 }
+
 label {
   font-weight: bold;
 }
+
 input, select {
   width: 100%;
   padding: 8px;
   margin: 8px 0 15px;
+  font-size: 16px;
 }
-.checkbox {
-  margin-bottom: 15px;
-}
+
 button {
   width: 100%;
   padding: 12px;
@@ -37,15 +40,61 @@ button {
   border: none;
   font-size: 16px;
   border-radius: 6px;
+  cursor: pointer;
 }
+
 .result {
   margin-top: 15px;
   font-size: 18px;
   font-weight: bold;
 }
+
 .breakdown {
   margin-top: 10px;
   font-size: 14px;
+}
+
+/* MOBILE TOGGLES */
+.toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 15px;
+  font-size: 16px;
+}
+
+.toggle input {
+  display: none;
+}
+
+.slider {
+  width: 52px;
+  height: 28px;
+  background: #ccc;
+  border-radius: 28px;
+  position: relative;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  background: #fff;
+  border-radius: 50%;
+  top: 3px;
+  left: 3px;
+  transition: transform 0.3s;
+}
+
+.toggle input:checked + .slider {
+  background: #0b5ed7;
+}
+
+.toggle input:checked + .slider::before {
+  transform: translateX(24px);
 }
 </style>
 </head>
@@ -83,14 +132,21 @@ button {
 
   <hr>
 
-  <div class="checkbox">
-    <input type="checkbox" id="materials">
-    <label for="materials">Materials Fee ($50)</label>
+  <!-- MOBILE TOGGLES -->
+  <div class="toggle">
+    <span>Materials Fee ($50)</span>
+    <label>
+      <input type="checkbox" id="materials">
+      <div class="slider"></div>
+    </label>
   </div>
 
-  <div class="checkbox">
-    <input type="checkbox" id="travel">
-    <label for="travel">Travel Fee ($15)</label>
+  <div class="toggle">
+    <span>Travel Fee ($15)</span>
+    <label>
+      <input type="checkbox" id="travel">
+      <div class="slider"></div>
+    </label>
   </div>
 
   <label>Additional Part (optional)</label>
@@ -117,7 +173,7 @@ function calculate() {
   const extraPartName = document.getElementById("extraPartName").value;
   const extraPartCost = Number(document.getElementById("extraPartCost").value) || 0;
 
-  // Markups
+  // MARKUPS
   const glassWithMarkup = glass * 1.25;
   const moldingWithMarkup = molding * 1.25;
   const extraPartWithMarkup = extraPartCost * 1.25;
@@ -141,7 +197,7 @@ function calculate() {
   const subtotal = taxableParts + nonTaxable;
   const totalWithTax = subtotal + tax;
 
-  // 4% payment fee
+  // PAYMENT FEE
   const paymentFee = totalWithTax * 0.04;
   const finalTotal = totalWithTax + paymentFee;
 
@@ -153,8 +209,8 @@ function calculate() {
     extraPartLine = `${extraPartName || "Additional Part"} (25% markup): $${extraPartWithMarkup.toFixed(2)}<br>`;
   }
 
-  let materialsLine = materials > 0 ? `Materials: $50.00<br>` : "";
-  let travelLine = travel > 0 ? `Travel Fee (non-taxable): $15.00<br>` : "";
+  let materialsLine = materials ? "Materials: $50.00<br>" : "";
+  let travelLine = travel ? "Travel Fee (non-taxable): $15.00<br>" : "";
 
   document.getElementById("breakdown").innerHTML = `
     Glass (25% markup): $${glassWithMarkup.toFixed(2)}<br>
