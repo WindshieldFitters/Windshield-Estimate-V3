@@ -1,9 +1,9 @@
-# Glass Estimator
+# WF Glass Estimator
 
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Quick Glass Estimate Calculator</title>
+<title>Glass Estimate Calculator</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 <style>
